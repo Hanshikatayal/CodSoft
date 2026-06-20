@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string userInput;
+
+    cout << "Chatbot: Hello! I am your simple chatbot.\n";
+    cout << "Type 'bye' to end the chat.\n\n";
+
+    while (true) {
+        cout << "You: ";
+        getline(cin, userInput); // take full line input
+
+        // check user input and reply
+        if (userInput == "hi" || userInput == "hello") {
+            cout << "Chatbot: Hello! How are you?\n";
+        }
+        else if (userInput == "how are you") {
+            cout << "Chatbot: I am fine! Thank you for asking.\n";
+        }
+        else if (userInput == "what is your name") {
+            cout << "Chatbot: My name is Chatbot.\n";
+        }
+        else if (userInput == "who made you") {
+            cout << "Chatbot: I was made by a student learning C++.\n";
+        }
+        else if (userInput == "bye") {
+            cout << "Chatbot: Goodbye! Have a nice day!\n";
+            break; // stop the loop
+        }
+        else {
+            cout << "Chatbot: Sorry, I don’t understand that.\n";
+        }
+    }
+
+    return 0;
+}
