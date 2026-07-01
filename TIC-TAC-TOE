@@ -1,0 +1,77 @@
+#include <iostream>
+using namespace std;
+
+char board[3][3] = {{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
+
+bool movesLeft() {
+    for(int i=0;i<3;i++) for(int j=0;j<3;j++)
+        if(board[i][j]==' ') return true;
+    return false;
+}
+
+int evaluate() {
+    for(int i=0;i<3;i++)
+        if(board[i][0]==board[i][1] && board[i][1]==board[i][2] && board[i][0]!=' ')
+            return (board[i][0]=='O')?10:-10;
+    for(int j=0;j<3;j++)
+        if(board[0][j]==board[1][j] && board[1][j]==board[2][j] && board[0][j]!=' ')
+            return (board[0][j]=='O')?10:-10;
+    if(board[0][0]==board[1][1] && board[1][1]==board[2][2] && board[0][0]!=' ')
+        return (board[0][0]=='O')?10:-10;
+    if(board[0][2]==board[1][1] && board[1][1]==board[2][0] && board[0][2]!=' ')
+        return (board[0][2]=='O')?10:-10;
+    return 0;
+}
+
+int minimax(bool isAI) {
+    int score = evaluate();
+    if(score!=0 || !movesLeft()) return score;
+    int best = isAI ? -1000 : 1000;
+    for(int i=0;i<3;i++) for(int j=0;j<3;j++)
+        if(board[i][j]==' ') {
+            board[i][j] = isAI ? 'O' : 'X';
+            int val = minimax(!isAI);
+            board[i][j] = ' ';
+            best = isAI ? max(best,val) : min(best,val);
+        }
+    return best;
+}
+
+void bestMove() {
+    int bestVal=-1000, r=-1, c=-1;
+    for(int i=0;i<3;i++) for(int j=0;j<3;j++)
+        if(board[i][j]==' ') {
+            board[i][j]='O';
+            int moveVal=minimax(false);
+            board[i][j]=' ';
+            if(moveVal>bestVal){r=i;c=j;bestVal=moveVal;}
+        }
+    board[r][c]='O';
+}
+
+void showBoard() {
+    cout<<"\n";
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++) cout<<board[i][j]<<" ";
+        cout<<"\n";
+    }
+}
+
+int main() {
+    cout<<"Tic-Tac-Toe (You=X, AI=O)\n";
+    while(movesLeft() && evaluate()==0){
+        int r,c;
+        showBoard();
+        cout<<"Enter row & col (0-2): ";
+        cin>>r>>c;
+        if(board[r][c]==' ') board[r][c]='X';
+        else {cout<<"Invalid!\n"; continue;}
+        if(evaluate()!=0 || !movesLeft()) break;
+        bestMove();
+    }
+    showBoard();
+    int res=evaluate();
+    if(res==10) cout<<"AI wins!\n";
+    else if(res==-10) cout<<"You win!\n";
+    else cout<<"Draw!\n";
+}
