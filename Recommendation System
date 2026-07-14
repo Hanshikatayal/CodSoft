@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
+#include <algorithm>
+using namespace std;
+
+// Movie structure
+struct Movie {
+    string title;
+    string genre;
+};
+
+// Function to recommend movies based on genre
+vector<string> recommendMovies(string userGenre, vector<Movie> movies) {
+    vector<string> recommendations;
+    for (auto &m : movies) {
+        if (m.genre == userGenre) {
+            recommendations.push_back(m.title);
+        }
+    }
+    return recommendations;
+}
+
+int main() {
+    // Sample movie dataset
+    vector<Movie> movies = {
+        {"Inception", "Sci-Fi"},
+        {"Interstellar", "Sci-Fi"},
+        {"The Dark Knight", "Action"},
+        {"Avengers", "Action"},
+        {"Titanic", "Romance"},
+        {"The Notebook", "Romance"}
+    };
+
+    string userGenre;
+    cout << "Enter your preferred genre (Sci-Fi / Action / Romance): ";
+    cin >> userGenre;
+
+    vector<string> result = recommendMovies(userGenre, movies);
+
+    if (result.empty()) {
+        cout << "No recommendations found for genre: " << userGenre << endl;
+    } else {
+        cout << "\nRecommended movies for you:\n";
+        for (auto &title : result) {
+            cout << "- " << title << endl;
+        }
+    }
+
+    return 0;
+}
